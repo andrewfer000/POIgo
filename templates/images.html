@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Images</title>
+    <img
+    src="..\static\assets\logo.png"
+    alt="poigos logo"
+    width="300"
+    height="241" />
+    <p></p>
+    <style>
+            button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <form action="{{url_for('saved')}}">
+        <button class="" type="submit">Back to Saved Locations</button>
+    </form>
+
+    <h2>Viewing Uploaded Images for your location.</h2>
+    {% if images %}
+        {% for image in images %}
+        <div>
+            <img src="/static/uploads/{{ image.filename }}" width="50%" height="50%">
+        </div>
+        <form action="/deleteimage/{{image.id}}" method="POST">
+            <button type="submit">Delete Image</button>
+        </form>
+        <p></p>
+        <br>
+        {% endfor %}
+        <p>Upload more images for this location here!</p>
+        <form action="/uploadimages/{{locationid}}">
+            <button class="" type="submit">Upload Images</button>
+        </form>
+    {% else %}
+        <p>No images uploaded for this location yet!</p>
+        <p>Upload some here!</p>
+        <form action="/uploadimages/{{locationid}}">
+            <button class="" type="submit">Upload Images for this location</button>
+        </form>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .submit-btn {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+
+  </style>
+    <title>Register</title>
+    <img
+    src="..\static\assets\logo.png"
+    alt="poigos logo"
+    width="300"
+    height="241" />
+    <p></p>
+</head>
+<body>
+    <h1>Register</h1>
+    <form action="" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+        <br><br>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
+        <br><br>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
+        <br><br>
+        <button class="submit-btn" type="submit">Submit</button>
+    </form>
+
+    <h3>Already have an account?</h3>
+
+    <form action="{{url_for('login')}}">
+        <button class="submit-btn" type="submit">Login Here</button>
+    </form>
+</body>
+</html>

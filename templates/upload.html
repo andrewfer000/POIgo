@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Upload an Image</title>
+        <img
+        src="..\static\assets\logo.png"
+        alt="poigos logo"
+        width="300"
+        height="241" />
+        <p></p>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 16px;
+                line-height: 1.5;
+                margin: 0;
+                padding: 0;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                margin: 0;
+                font-weight: bold;
+                line-height: 1.2;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            ul, ol {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
+            li {
+                margin-bottom: 10px;
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            input[type="file"] {
+                margin-bottom: 10px;
+            }
+            input[type="text"] {
+                margin-bottom: 10px;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <form action="/images/{{locationid}}">
+                <button class="" type="submit">Back to Images</button>
+            </form>
+            <h2>Upload an Image</h2>
+            <p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </p>
+            <form method="post" action="/uploadimages/{{locationid}}" enctype="multipart/form-data">
+                <div>
+                    <input type="file" name="file" autocomplete="off" required>
+                </div>
+                <div>
+                    <label for="alttext">Alternative Text:</label>
+                    <input type="text" name="alttext" id="alttext" value="">
+                </div>
+                <div>
+                    <button type="submit">Upload</button>
+                </div>
+            </form>
+        </div>
+    </body>
+</html> 

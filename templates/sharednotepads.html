@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Notepads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        .notepad {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        .notepad p {
+            margin: 0;
+        }
+
+        form {
+            margin: 10px 0;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+    </style>
+          <img
+          src="..\static\assets\logo.png"
+          alt="poigos logo"
+          width="300"
+          height="241" />
+          <p></p>
+</head>
+<body>
+    <h1>Notepads shared with you for this location</h1>
+        <div>
+        <form action="{{url_for('viewshare')}}">
+            <button class="" type="submit">Back to Shared Locations</button>
+        </form>
+    </div>
+    {% for notepad in notepads %}
+    <div class="notepad">
+        <p>Nodepad ID: {{notepad.id}}</p>
+
+        <form action="/sharednotepad/{{notepad.id}}" method="GET">
+            <input type="hidden" name="shareid" id="shareid" value="{{notepad.shareid}}">
+            <button type="submit">View/Edit Notepad</button>
+        </form>
+    </div>
+    {% endfor %}
+</body>
+
+</body>
+</html>

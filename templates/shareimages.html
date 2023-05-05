@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Location Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .image-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    form {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .return-btn {
+      margin-top: 10px;
+      text-align: left;
+    }
+
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+    }
+
+          button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+          }
+  </style>
+        <img
+        src="..\static\assets\logo.png"
+        alt="poigos logo"
+        width="300"
+        height="241" />
+        <p></p>
+</head>
+<body>
+  <form class="return-btn" action="/share/{{locationid}}">
+      <button class="" type="submit">Back to Share Menu</button>
+  </form>
+  <h2>Viewing Shared Images for your location.</h2>
+  {% for image in images %}
+    <div class="image-container">
+      <img src="/static/uploads/{{ image.filename }}" alt="Location Image">
+      {% if image.id in sharedimages  %}
+        <form action="/shareimage/{{id}}" method="POST">
+          <input type="hidden" name="imageid" id="imageid" value="{{image.id}}">
+          <button type="submit">Unshare</button>
+        </form>
+      {% else %}
+        <form action="/shareimage/{{id}}" method="POST">
+          <input type="hidden" name="imageid" id="imageid" value="{{image.id}}">
+          <button type="submit">Share</button>
+        </form>
+      {% endif %}
+    </div>
+  {% endfor %}
+</body>
+</html>

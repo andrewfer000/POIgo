@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://maps.googleapis.com/maps/api/js?key={{mapsapikey}}&libraries=places"></script>
+    <script>
+        function initAutocomplete() {
+            var input = document.getElementById('address');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                // Do something with the selected place, e.g. display it on a map
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        .header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 10px;
+            font-size: 1rem;
+        }
+        .header a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            padding: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #333;
+        }
+        .form-group input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #666;
+        }
+        .examples {
+            margin-top: 20px;
+        }
+        .examples p {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .image-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+    </style>
+</head>
+<body onload="initAutocomplete()">
+    <div class="header">
+        <h3>Hi {{ current_user.username }}</h3>
+        <a href="{{ url_for('logout')}}">Logout Here</a>
+        <a href="{{ url_for('saved')}}">My Saved Locations</a>
+        <a href="{{ url_for('viewshare')}}">Shared with me</a>
+        <a href="manageaccount/{{current_user.id}}">Account Settings</a>
+    </div>
+    <div class="image-container">
+    <img
+    src="..\static\assets\logo.png"
+    alt="poigos logo"
+    width="700"
+    height="440"
+     />
+     </div>
+    <div class="container">
+        <h1>Enter an address or business name</h1>
+   
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="address">Address or Business Name</label>
+                <input type="text" name="address" id="address" placeholder="Enter an address or business name">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search">
+            </div>
+        </form>
+        <div class="examples">
+            <h3> Examples </h3>
+            <p>900 College Cir

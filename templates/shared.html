@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function myMap() {
+            var map = new google.maps.Map(document.getElementById("googleMap"));
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var mapProp = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                map.setCenter(mapProp);
+                map.setZoom(10);
+                new google.maps.Marker({ map, position: mapProp, animation: google.maps.Animation.BOUNCE, icon: {url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"},});
+            }, function(positionError) {
+                map.setCenter(new google.maps.LatLng(39.8097343, -98.5556199));
+                map.setZoom(5);
+            });
+
+            var markers = [];
+            var infowindows = [];
+            {% for location in locations %}
+            markers.push(new google.maps.Marker({
+                position: {lat: {{ location['lat'] }}, lng: {{ location['lng'] }}},
+                map,
+                title: "{{location['name']}}",
+            }));
+
+            infowindows.push(new google.maps.InfoWindow({ content:
+                '<div id="content">' +
+                '<div id="siteNotice">' +
+                "</div>" +
+                '<h2 id="firstHeading" class="firstHeading">{{location['name']}}</h2>' +
+                '<h3>Shared By: {{location['usershared']}}</h3>' +
+                '<div id="bodyContent">' +
+                "<p>{{location['description']}}</p>" +
+                '<p><a href="geocode?address={{location['address']}}">{{location['address']}}</a></p>' +
+                '<p><a href="sharedimages/{{location['shareid']}}">Shared Images</a></p>'+
+                "</div>" +
+                "</div>"
+            }));
+
+            {% endfor %}
+
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].addListener('click', (function(i) {
+                    return function() {infowindows[i].open(map, markers[i]);}
+                })(i));
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #googleMap {
+            height: 60vh;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        h1, h2 {
+            margin: 20px 0;
+        }
+
+        .content {
+            margin: 20px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+    </style>
+
+</head>
+<body onload="myMap()">
+<form action="{{url_for('search')}}">
+    <button class="" type="submit">Back to Search</button>
+</form>
+<table>
+    <tr>
+        <th>Location Name</th>
+        <th>Description</th>
+        <th>Address</th>
+        <th>Shared From</th>
+                  <th>Actions</th>
+              </tr>
+
+              {% for location in locations %}
+              <tr>
+                  <td>{{ location['name']}}</td>
+                  <td>{{ location['description'] }}</td>
+                  <td><a href="geocode?address={{location['address']}}">{{location['address']}}</a></td>
+                  <td>{{ location['usershared'] }}</td>
+                  <td>
+                <form action="/sharedimages/{{location['shareid']}}" style="display: inline-block;">
+                <button class="" type="submit">Shared Images</button>
+              </form>
+              <form action="/sharednotepads/{{location['shareid']}}" style="display: inline-block;">
+                <button class="" type="submit">Shared Notepads</button>
+              </form>
+                <form action="/deleteshare/{{location['shareid']}}" onsubmit="return confirm('Are you sure you want to delete this location?');" style="display: inline-block;" method="POST">
+                <button class="" type="submit">Delete Share</button>
+              </form>
+
+                  </td>
+              </tr>
+              {% endfor %}
+          </table>
+
+      <h2>Map with location markers<h2>
+      <div id="googleMap"></div>
+      <img
+      src="..\static\assets\logo.png"
+      alt="poigos logo"
+      width="300"
+      height="241" />
+      <p></p>  
+    </body>
+
+      <script src="https://maps.googleapis.com/maps/api/js?key={{mapsapikey}}&callback=myMap"></script>

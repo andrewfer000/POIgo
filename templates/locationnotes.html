@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Location Notepads</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <style>
+          body {
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+              line-height: 1.5;
+              margin: 0;
+              padding: 0;
+          }
+          h2 {
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 16px;
+          }
+
+          form {
+              display: inline-block;
+              margin-right: 16px;
+          }
+
+          input[type="submit"] {
+              font-size: 16px;
+              padding: 8px;
+              border-radius: 4px;
+              border: none;
+              background-color: #007bff;
+              color: #fff;
+              cursor: pointer;
+          }
+
+          input[type="submit"]:hover {
+              background-color: #0062cc;
+          }
+
+          a {
+              color: #007bff;
+              text-decoration: none;
+              font-weight: bold;
+          }
+
+          a:hover {
+              text-decoration: underline;
+          }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+
+    button:hover {
+      background-color: #0d47a1; /* darken the background on hover */
+    }
+      </style>
+      <img
+      src="..\static\assets\logo.png"
+      alt="poigos logo"
+      width="300"
+      height="241" />
+  </head>
+  <body>
+      <div>
+        <form action="{{url_for('saved')}}" method="GET">
+         <button type="submit"> Back to Saved Locations </button>
+      </form>
+      </div>
+      <h2>Viewing Notepads for Selected Location</h2>
+      {% if notes %}
+      {% for note in notes %}
+      <div>
+          <h3>Edit Notepad {{note.id}}</h3>
+      </div>
+      <form action="/notepad/{{note.id}}" method="GET">
+            <button type="submit"> View/Edit Notepad </button>
+      </form>
+      <form action="/deletenotepad/{{note.id}}" method="POST">
+         <button type="submit"> Delete Notepad </button>
+      </form>
+      {% endfor %}
+      <br>
+      <h4>Create a New Notepad Here!</h4>
+      <form action="/createnotepad/{{locationid}}" method="POST">
+         <button type="submit">Create a new notepad</button>
+      </form>
+      {% else %}
+      <br>
+      <h4>No Notepads for This Location Yet!</h4>
+      <p>Create One Here</p>
+      <form action="/createnotepad/{{locationid}}" method="POST">
+         <button type="submit">Create a new notepad</button>
+      </form>
+      {% endif %}
+  </body>
+</html>

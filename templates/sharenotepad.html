@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Share Notepads</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .notepad-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    form {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .return-btn {
+      margin-top: 10px;
+      text-align: left;
+    }
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+          }
+
+  </style>
+        <img
+        src="..\static\assets\logo.png"
+        alt="poigos logo"
+        width="300"
+        height="241" />
+        <p></p>
+</head>
+<body>
+    <form class="return-btn" action="/share/{{locationid}}">
+      <button class="" type="submit">Back to Share Menu</button>
+  </form>
+  <h2>Viewing Shared Notepads for your location.</h2>
+  {% for notepad in notepads %}
+    <div class="notepad-container">
+      <p>Notepad ID: {{notepad.id}}</p>
+      {% if notepad.id in sharedpads  %}
+        <form action="/sharenotepad/{{id}}" method="POST">
+          <input type="hidden" name="notepadid" id="notepadid" value="{{notepad.id}}">
+         <button type="submit">Unshare</button>
+        </form>
+      {% else %}
+        <form action="/sharenotepad/{{id}}" method="POST">
+          <input type="hidden" name="notepadid" id="notepadid" value="{{notepad.id}}">
+          <button type="submit">Share</button>
+        </form>
+      {% endif %}
+    </div>
+  {% endfor %}
+</body>
+</html>

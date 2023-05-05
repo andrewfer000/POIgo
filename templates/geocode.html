@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Geocoding Results</title>
+    <img
+    src="..\static\assets\logo.png"
+    alt="poigos logo"
+    width="300"
+    height="241" />
+    <p></p>
+</head>
+<body>
+    <header>
+        <h1>Results for {{ current_user.username }}'s Query</h1>
+        <nav>
+            <ul>
+                <form action="{{url_for('search')}}">
+                    <button class="" type="submit">Back to Search</button>
+                </form>
+                <br>
+                <form action="{{url_for('saved')}}">
+                    <button class="" type="submit">Back to Saved Locations</button>
+                </form>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% if error %}
+            <p>Error: {{ error }}</p>
+        {% else %}
+            <section>
+                <h2>Location</h2>
+                <ul>
+                    <li><strong>Latitude:</strong> {{ latitude }}</li>
+                    <li><strong>Longitude:</strong> {{ longitude }}</li>
+                    <li><strong>Full Address:</strong> {{ address }}</li>
+                </ul>
+                <h3><a href="https://www.google.com/maps/dir/?api=1&destination={{address}}">Get Directions</a></h3>
+            </section>
+            <section>
+                <h2>Location On The Map</h2>
+                <img src="{{static_map_url}}" alt="Map of the address">
+            </section>
+            <section>
+                <h2>Image of Location</h2>
+                <img src="{{street_view_url}}" alt="Street View">
+            </section>
+            {% if matchlocation != 1 %}
+                <section>
+                    <h2>Save this location to your locations</h2>
+                    <form action="/saved" method="POST">
+                        <label for="usergivenname">Name:</label>
+                        <input type="text" name="usergivenname" id="usergivenname">
+                        <label for="userdescription">Description:</label>
+                        <input type="text" name="userdescription" id="userdescription">
+                        <input type="hidden" name="address" id="address" value="{{ address }}">
+                        <input type="hidden" name="googlemapsid" id="googlemapsid" value="{{ placeid }}">
+                        <input type="hidden" name="lat" id="lat" value="{{ latitude }}">
+                        <input type="hidden" name="lng" id="lng" value="{{ longitude }}">
+                        <button type="submit">Save Location</Button>
+                    </form>
+                </section>
+            {% else %}
+                <p>Location already saved in your <a href="{{ url_for('saved')}}">Locations</a></p>
+            {% endif %}
+        {% endif %}
+    </main>
+</body>
+</html>

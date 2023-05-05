@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            }
+</style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Account</title>
+    <img
+    src="..\static\assets\logo.png"
+    alt="poigos logo"
+    width="300"
+    height="241" />
+    <p></p>
+</head>
+<body>
+    <form action="{{url_for('search')}}">
+        <button class="" type="submit">Back to Search</button>
+    </form>
+    <form action="" method="POST">
+        <label for="email">Email:</label><br>
+        <input type="email" name="email" id="email" value="{{email}}" required><br>
+        <label for="username">Username:</label><br>
+        <input type="text" name="username" id="username" value="{{username}}" required><br>
+        <label for="oldpassword">Old Password:</label><br>
+        <input type="password" name="oldpassword" id="oldpassword" required><br>
+        <label for="password">New Password:</label><br>
+        <input type="password" name="password" id="password" required><br><br>
+        <button type="submit">Update Account</button>
+    </form>
+    <br>
+    <form action="/deleteaccount/{{id}}">
+        <button class="" type="submit">DELETE ACCOUNT</button>
+    </form>
+</body>
+</html>

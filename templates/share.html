@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Share Location</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .content {
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #666;
+        }
+
+        .shared-with-container {
+            margin-top: 20px;
+        }
+
+        .shared-with-container h1 {
+            margin-bottom: 10px;
+        }
+
+        .shared-with-container p {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .shared-with-container form {
+            display: inline;
+        }
+
+        .shared-with-container form input[type="submit"] {
+            background-color: #ccc;
+            color: #333;
+            margin-left: 10px;
+        }
+
+        .shared-with-container form input[type="submit"]:hover {
+            background-color: #ddd;
+        }
+
+        button {
+            background-color: #1a237e;
+            color: #fff;
+            border: 2px solid #ff9800;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+          }
+    </style>
+  <img
+  src="..\static\assets\logo.png"
+  alt="poigos logo"
+  width="300"
+  height="241" />
+  <p></p>
+</head>
+<body>
+    <div>
+    <form action="{{url_for('saved')}}">
+        <button class="" type="submit">Back to Saved Locations</button>
+    </form>
+    </div>
+    <div class="content">
+        <h1>Share Location with Another User</h1>
+        <p>Sharing location {{location.usergivenname}}</p>
+        <form action="/share/{{id}}" method="POST">
+            <input type="text" name="username" id="username" value="" placeholder="Enter username">
+            <input type="submit" value="Share">
+        </form>
+    </div>
+    <div class="shared-with-container">
+        <h1>Currently Shared With</h1>
+        {% for locationshared in sharedwith %}
+        <p>{{locationshared.sharedwithusername}}</p>
+        <form action="/deleteshare/{{locationshared.id}}" method="POST">
+            <input type="submit" value="Delete Share">
+        </form>
+        <form action="/shareimage/{{locationshared.id}}" method="GET">
+            <input type="submit" value="Share Images">
+        </form>
+        <form action="/sharenotepad/{{locationshared.id}}" method="GET">
+            <input type="submit" value="Share Notepads">
+        </form>
+        {% endfor %}
+    </div>
+</body>
+</html>
