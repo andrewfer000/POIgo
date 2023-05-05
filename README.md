@@ -48,6 +48,9 @@ db.create_all()
 exit() 
 ```
 
+**IMPORTANT:** Insert your Google Maps API key in `app.py`
+
+
 Run the app:
 
 ```
