@@ -61,3 +61,7 @@ python app.py
 When you want to run POIgo after setup, All you need to do is
 1. Activate the virtual Environment using either the `source` command on Linux or run the `activate.bat` script on Windows
 2. Run `python app.py` in the POIgo root directory
+
+
+# POIgo's Code History
+This is our second repo. The original development was private. We made a decision to make a new repository for the public code due to private information such as hashed passwords and API keys being accessable in the old repository. If you are interested in POIgo's hisotry before this please reach out to me.
