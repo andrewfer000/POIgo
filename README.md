@@ -3,7 +3,7 @@ This project started as a Capstone Project for C&amp;I at Rowan University. POIg
 
 Please note you will need to obtain a FREE google maps API key to use this application. Support for other APIs may come in the future.  
 
-Other things to keep in mind is that Registration is open with no form of email verifcation or security limitations. This application is not meant to be put on the public internet yet.
+Registration is open by default and 
 
 ## Future Goals (2024 and Beyond)
 Since I may start using this at my job, I'd like to improve POIgo. This includes:
@@ -14,6 +14,8 @@ Since I may start using this at my job, I'd like to improve POIgo. This includes
 5. Postgres and MySQL support for more capability and enterprise use.
 6. Docker Image?
 
+## Features that are planned to be removed in the near future
+1. Image uploads, Since notpads support images and the current image implmentation is insecure. May replace with some sort of file storage (ie Text documents, Images, Etc.) stored directly in the database.
 
 ## Original POIgo Team
 - Andrew Ferdetta (Backend Enginner &amp; Full Stack Developer, Testing)
