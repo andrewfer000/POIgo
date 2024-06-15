@@ -19,7 +19,7 @@ pip install flask
 pip install numpy
 pip install flask_sqlalchemy
 pip install flask_login
-pip install request
+pip install requests
 ```
 
 Linux & MacOS Virtual Enviornment
@@ -32,7 +32,7 @@ pip install flask
 pip install numpy
 pip install flask_sqlalchemy
 pip install flask_login
-pip install request
+pip install requests
 ```
 
 Database Setup (First time)
