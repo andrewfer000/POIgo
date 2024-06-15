@@ -9,6 +9,9 @@ from werkzeug.utils import secure_filename
 #from flask_mail import Mail, Message
 #from itsdangerous import URLSafeTimedSerializer
 import traceback
+import time
+import urllib
+from urllib.parse import quote
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
@@ -18,7 +21,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Google Maps API Key
-app.config['GOOGLE_MAPS_APIKEY'] = 'ENTER_YOUR_API_KEY_HERE'
+app.config['GOOGLE_MAPS_APIKEY'] = 'INSERT_YOUR_KEY_HERE'
 #app.app_context().push()
 db.init_app(app)
 # User image upload location relarive to app.py
@@ -80,10 +83,12 @@ def locationmatch(address, streetnum):
 
     return matchlocation
 
+"""
+THIS CODE BELOW DOES NOT WORK!
 @app.before_first_request
 def create_all():
     db.create_all()
-
+"""
 """
 Login function. It takes a username and password and returs a login token.
 """
@@ -209,16 +214,16 @@ This function searches the address using the google map API and returns the Lat,
 @login_required
 def geocode():
     api_key = app.config['GOOGLE_MAPS_APIKEY']
-    address = request.args.get('address')
-    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
+    raddress = quote(request.args.get('address'))
+    saddress = request.args.get('address')
+    url = f'https://maps.googleapis.com/maps/api/geocode/json?address={raddress}&key={api_key}'
     response = requests.get(url)
     json_response = response.json()
     g.user = current_user.get_id()
 
     if json_response['status'] == 'OK':
-        address = json_response['results'][0]['formatted_address']
-
-        url = f'https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}'
+        raddress = quote(json_response['results'][0]['formatted_address'])
+        url = f'https://maps.googleapis.com/maps/api/geocode/json?address="{raddress}"&key={api_key}'
         response2 = requests.get(url)
         json_response2 = response2.json()
 
@@ -236,9 +241,9 @@ def geocode():
             matchlocation = locationmatch(address, streetnum)
 
         if 'application/json' in request.headers.get('Accept'):
-            return jsonify(latitude=lat, longitude=lng, static_map_url=static_map_url, street_view_url=street_view_url, address=address, placeid=placeid, userid=g.user, matchlocation=matchlocation)
+            return jsonify(latitude=lat, longitude=lng, static_map_url=static_map_url, street_view_url=street_view_url, address=address, placeid=placeid, userid=g.user, matchlocation=matchlocation, saddress=saddress)
         else:
-            return render_template('geocode.html', latitude=lat, longitude=lng, static_map_url=static_map_url, street_view_url=street_view_url, address=address, placeid=placeid, userid=g.user, matchlocation=matchlocation)
+            return render_template('geocode.html', latitude=lat, longitude=lng, static_map_url=static_map_url, street_view_url=street_view_url, address=address, placeid=placeid, userid=g.user, matchlocation=matchlocation, saddress=saddress)
     else:
         if 'application/json' in request.headers.get('Accept'):
             return jsonify(error=json_response['status'])
@@ -296,8 +301,9 @@ def saved():
             location_userdescription = request.form['userdescription']
             location_lat = request.form['lat']
             location_lng = request.form['lng']
+            saddress = request.form['saddress']
 
-            new_location = SavedLocationsModel(userid=g.user, googlemapsid=location_googlemapsid, usergivenname=location_usergivenname, address=location_address,  userdescription=location_userdescription, lat=location_lat, lng=location_lng)
+            new_location = SavedLocationsModel(userid=g.user, googlemapsid=location_googlemapsid, usergivenname=location_usergivenname, address=location_address,  userdescription=location_userdescription, lat=location_lat, lng=location_lng, saddress=saddress)
 
             try:
                 db.session.add(new_location)

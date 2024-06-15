@@ -29,6 +29,7 @@ class SavedLocationsModel(db.Model):
     googlemapsid = db.Column(db.String(80))
     usergivenname = db.Column(db.String(80))
     address = db.Column(db.String(180))
+    saddress = db.Column(db.String(180))
     userdescription = db.Column(db.String(3072))
     lat = db.Column(db.String(16))
     lng = db.Column(db.String(16))
