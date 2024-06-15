@@ -3,7 +3,7 @@ This project started as a Capstone Project for C&amp;I at Rowan University. POIg
 
 Please note you will need to obtain a FREE google maps API key to use this application. Support for other APIs may come in the future.  
 
-Registration is open by default and 
+Registration is open by default. However you can close this registration or require a registration key to be used during sign up in order to protect your instance.
 
 ## Future Goals (2024 and Beyond)
 Since I may start using this at my job, I'd like to improve POIgo. This includes:
