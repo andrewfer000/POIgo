@@ -9,9 +9,10 @@ Other things to keep in mind is that Registration is open with no form of email 
 Since I may start using this at my job, I'd like to improve POIgo. This includes:
 1. Fixing bugs and making the application more stable
 2. Improving the UI and making the frontend more functional
-3. Email verifcation for new users and maybe passwordless login. Also the ability for the admin to disable new user signup.
-4. Global Configuration File for variables such as the API key and other stuff
-5. Postgres and MySQL support
+3. Email verifcation for new users and maybe passwordless login. 2FA functionality with some kind of authenticator would be nice too.
+4. Global Configuration File for variables such as the API key, Database, and other stuff
+5. Postgres and MySQL support for more capability and enterprise use.
+6. Docker Image?
 
 
 ## Original POIgo Team
