@@ -15,13 +15,17 @@ from urllib.parse import quote
 
 app = Flask(__name__)
 app.secret_key = 'xyz'
+app.config['REGISTER_ENABLED'] = True
+app.config['REGISTER_KEY_REQUIRED'] = False
+app.config['REGISTER_KEY'] = ''
+
 # Max Upload Size
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 # SQlite database location and options
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Google Maps API Key
-app.config['GOOGLE_MAPS_APIKEY'] = 'INSERT_YOUR_KEY_HERE'
+app.config['GOOGLE_MAPS_APIKEY'] = 'YOUR_API_KEY_HERE'
 #app.app_context().push()
 db.init_app(app)
 # User image upload location relarive to app.py
@@ -130,52 +134,65 @@ Register for a new account. Takes in an Email, Username, and password. Checks th
 """
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    if 'application/json' in request.headers.get('Accept'):
-        if current_user.is_authenticated:
-            return jsonify({"notice": "You are already authenticated"})
+    if app.config['REGISTER_ENABLED'] == True:
+        if 'application/json' in request.headers.get('Accept'):
+            if current_user.is_authenticated:
+                return jsonify({"notice": "You are already authenticated"})
 
-        if request.method == 'POST':
-            auth = request.get_json()
-            if not auth or not auth.get('email') or not auth.get('password'):
-                return jsonify({"error": "No login info provided"})
-            else:
-                email = auth.get('email')
-                username = auth.get('username')
-                password = auth.get('password')
 
-            if UserModel.query.filter_by(email=email).first():
-                    return jsonify({"error": "Email already present"})
-            if UserModel.query.filter_by(username=username).first():
-                    return jsonify({"error": "Username already present"})
+            if request.method == 'POST':
+                auth = request.get_json()
+                if auth.get('regkey') == app.config['REGISTER_KEY'] or app.config['REGISTER_KEY_REQUIRED'] == False:
+                    if not auth or not auth.get('email') or not auth.get('password'):
+                        return jsonify({"error": "No login info provided"})
+                    else:
+                        email = auth.get('email')
+                        username = auth.get('username')
+                        password = auth.get('password')
 
-            user = UserModel(email=email, username=username)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            return jsonify({"Notice": "Account has been created. Please login"})
-        return jsonify({"error": "This endpoint is post only for APIs"})
 
+                    if UserModel.query.filter_by(email=email).first():
+                            return jsonify({"error": "Email already present"})
+                    if UserModel.query.filter_by(username=username).first():
+                            return jsonify({"error": "Username already present"})
+
+                    user = UserModel(email=email, username=username)
+                    user.set_password(password)
+                    db.session.add(user)
+                    db.session.commit()
+                    return jsonify({"Notice": "Account has been created. Please login"})
+                else:
+                    return jsonify({"Warning": "Registration Key Required or Incorrect"})
+            return jsonify({"error": "This endpoint is post only for APIs"})
+
+        else:
+            if current_user.is_authenticated:
+                return redirect('/')
+
+            if request.method == 'POST':
+                if request.form['regkey'] == app.config['REGISTER_KEY'] or app.config['REGISTER_KEY_REQUIRED'] == False:
+                    email = request.form['email']
+                    username = request.form['username']
+                    password = request.form['password']
+
+                    if UserModel.query.filter_by(email=email).first():
+                            return ('Email already Present')
+                    if UserModel.query.filter_by(username=username).first():
+                            return ('Username already Present')
+
+                    user = UserModel(email=email, username=username)
+                    user.set_password(password)
+                    db.session.add(user)
+                    db.session.commit()
+                    return redirect('/login')
+                else:
+                    return jsonify({"Warning": "Registration Key Required or Incorrect"})
+            return render_template('register.html')
     else:
-        if current_user.is_authenticated:
-            return redirect('/')
-
-        if request.method == 'POST':
-            email = request.form['email']
-            username = request.form['username']
-            password = request.form['password']
-
-            if UserModel.query.filter_by(email=email).first():
-                    return ('Email already Present')
-            if UserModel.query.filter_by(username=username).first():
-                    return ('Username already Present')
-
-            user = UserModel(email=email, username=username)
-            user.set_password(password)
-            db.session.add(user)
-            db.session.commit()
-            return redirect('/login')
-        return render_template('register.html')
-
+        if 'application/json' in request.headers.get('Accept'):
+            return jsonify({"error": "Public registration is currently disabled. Please contact the admin"})
+        else:
+            return jsonify({"error": "Public registration is currently disabled. Please contact the admin"})
 
 """
 Logs the user out by revoking their token
