@@ -26,7 +26,7 @@
 </head>
 <body>
     <header>
-        <h1>Results for {{ current_user.username }}'s Query</h1>
+        <h2>Results for {{ current_user.username }}'s Query for {{ saddress }}</h2>
         <nav>
             <ul>
                 <form action="{{url_for('search')}}">
@@ -72,6 +72,7 @@
                         <input type="hidden" name="googlemapsid" id="googlemapsid" value="{{ placeid }}">
                         <input type="hidden" name="lat" id="lat" value="{{ latitude }}">
                         <input type="hidden" name="lng" id="lng" value="{{ longitude }}">
+                        <input type="hidden" name="saddress" id="saddress" value="{{ saddress }}">
                         <button type="submit">Save Location</Button>
                     </form>
                 </section>
