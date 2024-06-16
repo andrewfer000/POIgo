@@ -13,6 +13,8 @@ Since I may start using this at my job, I'd like to improve POIgo. This includes
 4. Global Configuration File for variables such as the API key, Database, and other stuff
 5. Postgres and MySQL support for more capability and enterprise use.
 6. Docker Image?
+7. Move all map data stuff into one place. This will hopefully allow extending to other APIs such as Apple Maps.
+
 
 ## Features that are planned to be removed in the near future
 1. Image uploads, Since notpads support images and the current image implmentation is insecure. May replace with some sort of file storage (ie Text documents, Images, Etc.) stored directly in the database.
