@@ -956,7 +956,7 @@ def viewshare():
         for sharedfrom in sharedfroms:
             usershared = sharedfrom.username
         for location in locations:
-            locationadd = dict(id = location.id, name = location.usergivenname, description = location.userdescription, address = location.address, lat=location.lat, lng=location.lng, shareid=sharedlocation.id, usershared=usershared)
+            locationadd = dict(id = location.id, name = location.usergivenname, description = location.userdescription, address = location.address, saddress = location.saddress, lat=location.lat, lng=location.lng, shareid=sharedlocation.id, usershared=usershared)
             locationsdata.append(locationadd)
 
     if 'application/json' in request.headers.get('Accept'):
@@ -1131,7 +1131,7 @@ def notepad(id):
                 content = content["ops"]
                 return render_template('notepad.html', content=json.dumps(content), id=id, locationid=getNote.locationid)
             except:
-                return render_template("notepad.html", id=id)
+                return render_template("notepad.html", id=id, locationid=getNote.locationid)
     else:
         return "You cannot edit a notepad that is not yours"
 
