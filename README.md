@@ -75,7 +75,12 @@ Run the app:
 python app.py
 ```
 
-# After Setup
+# First Login
+1. Go to localhost:5000 or your server address if you are running it in the cloud.
+2. Register for an account. You need a username and password and enter the registration key if you set one in the config
+3. Login and start using POIgo! To test your API Key, try searching for an address.   
+
+# Starting After Setup 
 When you want to run POIgo after setup, All you need to do is
 1. Activate the virtual Environment using either the `source` command on Linux or run the `activate.bat` script on Windows
 2. Run `python app.py` in the POIgo root directory
