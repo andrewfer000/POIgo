@@ -1,7 +1,7 @@
 # POIgo
-This project started as a Capstone Project for C&amp;I at Rowan University. POIgo is an advanced multi-user web based address book which can store locations, photos for those locations, and even multiple rich text notepads for those locations which can be shared with other users on the system. Some possible uses of POIgo are Construction Site Management, Customer location management, Realestate, Travel planning, and more! 
+This project started as a Capstone Project for C&amp;I at Rowan University. POIgo is an advanced multi-user web based address book which can store locations, photos, and even multiple rich text notepads for saved locations which can be shared with other users on the system. Some possible uses of POIgo are Construction Site Management, Customer location management, Realestate, Travel planning, and more! 
 
-Please note you will need to obtain a FREE google maps API key to use this application. Support for other APIs may come in the future.  
+Please note you will need to obtain a FREE google maps API key to use this application. Google gives everyone $200 in Maps API credits per month which is plenty for 10 or less regular users. Support for other APIs may come in the future.  
 
 Registration is open by default. However you can close this registration or require a registration key to be used during sign up in order to protect your instance.
 
