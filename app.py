@@ -25,7 +25,7 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Google Maps API Key
-app.config['GOOGLE_MAPS_APIKEY'] = 'YOUR_API_KEY_HERE'
+app.config['GOOGLE_MAPS_APIKEY'] = 'INSERT_YOUR_KEY_HERE'
 #app.app_context().push()
 db.init_app(app)
 # User image upload location relarive to app.py
@@ -239,23 +239,19 @@ def geocode():
     g.user = current_user.get_id()
 
     if json_response['status'] == 'OK':
-        raddress = quote(json_response['results'][0]['formatted_address'])
-        url = f'https://maps.googleapis.com/maps/api/geocode/json?address="{raddress}"&key={api_key}'
-        response2 = requests.get(url)
-        json_response2 = response2.json()
+        lat = json_response['results'][0]['geometry']['location']['lat']
+        lng = json_response['results'][0]['geometry']['location']['lng']
+        placeid = json_response['results'][0]['place_id']
+        streetnum = json_response['results'][0]['address_components'][0]['long_name']
+        streetname = json_response['results'][0]['address_components'][1]['short_name']
+        address = json_response['results'][0]['formatted_address']
 
-        if json_response2['status'] == 'OK':
-            lat = json_response2['results'][0]['geometry']['location']['lat']
-            lng = json_response2['results'][0]['geometry']['location']['lng']
-            placeid = json_response2['results'][0]['place_id']
-            streetnum = json_response2['results'][0]['address_components'][0]['long_name']
-            streetname = json_response2['results'][0]['address_components'][1]['short_name']
-            address = json_response['results'][0]['formatted_address']
+        static_map_url = f'https://maps.googleapis.com/maps/api/staticmap?center={lat},{lng}&zoom=15&size=600x300&markers={lat},{lng}&key={api_key}'
+        # street_view_url = f'https://maps.googleapis.com/maps/api/streetview?size=600x300&location={lat},{lng}&key={api_key}'
+        street_view_url = f'<p>Disabled Due To High API Cost.</p>'
 
-            static_map_url = f'https://maps.googleapis.com/maps/api/staticmap?center={lat},{lng}&zoom=15&size=600x300&markers={lat},{lng}&key={api_key}'
-            street_view_url = f'https://maps.googleapis.com/maps/api/streetview?size=600x300&location={lat},{lng}&key={api_key}'
 
-            matchlocation = locationmatch(address, streetnum)
+        matchlocation = locationmatch(address, streetnum)
 
         if 'application/json' in request.headers.get('Accept'):
             return jsonify(latitude=lat, longitude=lng, static_map_url=static_map_url, street_view_url=street_view_url, address=address, placeid=placeid, userid=g.user, matchlocation=matchlocation, saddress=saddress)
@@ -267,7 +263,6 @@ def geocode():
         else:
             error = json_response['status']
             return render_template('geocode.html', error=error)
-
 
 """
 Quires the database for the user's saved locations. This will then return a template that has a table of the locations and a map with pins.
